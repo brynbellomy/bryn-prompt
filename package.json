@@ -1,7 +1,7 @@
 {
   "name": "bryn-prompt",
-  "version": "0.0.1",
-  "description": "",
+  "version": "0.1.0",
+  "description": "My lovely lordly prompt",
   "main": "build/index.js",
   "scripts": {
     "test": "gulp test"
@@ -31,7 +31,7 @@
   "dependencies": {
     "chalk": "^1.0.0",
     "lodash": "^3.9.3",
-    "pan.ts": "0.0.1",
+    "pan.ts": "0.0.2",
     "when": "^3.7.3"
   }
 }
