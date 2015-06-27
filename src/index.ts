@@ -2,7 +2,6 @@
 ///<reference path='all-typings.d.ts' />
 
 import * as _ from 'lodash'
-import * as assert from 'assert'
 import * as path from 'path'
 import * as chalk from 'chalk'
 import { formatPathParts, IPathOptions } from './path'
@@ -67,7 +66,7 @@ function printPath (repoStatus: git.IRepoStatus, cols: number, rows: number) {
     const renderedRight    = ' ' + rightSegments.join(' ')
 
     const numSpaces = cols - chalk.stripColor(renderedSegments).length - chalk.stripColor(renderedRight).length
-    const spaces = _.repeat(' ', numSpaces)
+    const spaces    = _.repeat(' ', numSpaces)
 
     // render
     process.stdout.write(`\r\n${renderedSegments}${spaces}${renderedRight}\n${options.promptStr}`)
