@@ -1,0 +1,36 @@
+{
+  "name": "bryn-prompt",
+  "version": "0.0.1",
+  "description": "",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "bin": {
+    "bryn-prompt": "bin/bryn-prompt"
+  },
+  "authors": [
+    "bryn austin bellomy <bryn.bellomy@gmail.com>"
+  ],
+  "license": "ISC",
+  "devDependencies": {
+    "del": "^1.2.0",
+    "glob": "^5.0.10",
+    "gulp": "^3.8.11",
+    "gulp-jasmine": "^2.0.1",
+    "gulp-load-plugins": "^0.10.0",
+    "gulp-typescript": "^2.7.7",
+    "jasmine": "^2.3.1",
+    "jasmine-reporters": "^2.0.6",
+    "lodash": "^3.9.3",
+    "ts-link-defs": "^1.0.3",
+    "tsd": "^0.6.1",
+    "typescript": "^1.5.0-beta",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "dependencies": {
+    "chalk": "^1.0.0",
+    "lodash": "^3.9.3",
+    "when": "^3.7.3"
+  }
+}

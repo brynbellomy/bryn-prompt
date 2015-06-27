@@ -1,0 +1,8 @@
+#!/usr/bin/env node --harmony --harmony_classes --harmony_modules --harmony_arrow_functions --harmony_templates
+
+var bryn_prompt = require('../build/index')
+
+bryn_prompt.render()
+
+
+

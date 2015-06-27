@@ -1,0 +1,8 @@
+{   "folders": [
+     {   "path": ".",
+         "name": "bryn-prompt" },
+     {   "path": "./node_modules/nodegit",
+         "name": "nodegit" }
+     ]
+ }
+
