@@ -16,26 +16,36 @@ export interface IRepoStatus {
 }
 
 export function findRepo (cwd: string = process.cwd()) {
-    return whenNode.lift(find.dir)('.git', cwd).then(utils.logthru)
+    return whenNode.lift(find.dir)('.git', cwd)
 }
 
-export function getCurrentRepoStatus (cwd: string = process.cwd()) {
+export interface IGitOptions {
+    contractions: { [name: string]: string }
+}
+
+export function getCurrentRepoStatus (opts: IGitOptions, cwd: string = process.cwd()) {
     return findRepo(cwd).then(repoPath => {
-        return getRepoStatus(repoPath)
+        return getRepoStatus(opts, repoPath)
     })
 }
 
-export function getRepoStatus (repoPath: string)
+export function getRepoStatus (opts: IGitOptions, repoPath: string)
 {
     return ng.Repository.open(repoPath)
             .then(repo => when.join( repo.getStatus(), repo.getCurrentBranch() ))
             .then((tuple: [ng.Status[], ng.Reference]) => {
                 const [statuses, currentBranch] = tuple
+
                 return <IRepoStatus> {
-                    branch: currentBranch.toString(),
+                    branch: applyBranchNameContractions(currentBranch.toString(), opts.contractions),
                     dirty:  _.some(statuses, isDirty),
                 }
             })
+}
+
+function applyBranchNameContractions (branchName: string, contractions: {[name: string]: string}) {
+    const pairs = < [string, string][] > _.pairs(contractions)
+    return pairs.reduce((branch, p) => branch.replace(p[0], p[1]), branchName)
 }
 
 export function isDirty (status: ng.Status) {

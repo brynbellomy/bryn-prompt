@@ -1,24 +1,31 @@
 var path = require('path');
 var chalk = require('chalk');
-var utils_1 = require('./utils');
+var path_1 = require('./path');
 var git = require('./git');
 var utils = require('./utils');
 var options = {
-    homeStr: '~',
     promptStr: chalk.yellow(' λ'),
-    styledSeparator: chalk.blue(path.sep),
-    pathComponentOverrides: {
-        'projects': 'p'
+};
+var gitOptions = {
+    contractions: {
+        'refs/heads/': '',
+    },
+};
+var pathOptions = {
+    homeStr: '~',
+    separator: chalk.blue(path.sep),
+    contractions: {
+        'projects': 'p',
     },
 };
 function render() {
-    git.getCurrentRepoStatus()
+    git.getCurrentRepoStatus(gitOptions)
         .done(function (repoStatus) { return printPath(repoStatus); }, function (err) { console.error(err); printPath(null); });
 }
 exports.render = render;
 function printPath(repoStatus) {
     var segments = [
-        utils_1.formatPathParts(options).join(' ')
+        path_1.formatPathParts(pathOptions).join(' ')
     ];
     if (!utils.nullish(repoStatus)) {
         var color = repoStatus.dirty ? chalk.red : chalk.green;

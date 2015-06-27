@@ -1,30 +1,38 @@
 
 import * as path from 'path'
 import * as chalk from 'chalk'
-import { formatPathParts, IFormatPathPartsOptions } from './utils'
+import { formatPathParts, IPathOptions } from './path'
 import * as git from './git'
 import * as utils from './utils'
 
 
-const options: IFormatPathPartsOptions = {
-    homeStr:         '~',
-    promptStr:       <string><any>chalk.yellow(' λ'),
-    styledSeparator: <string><any>chalk.blue(path.sep),
-    pathComponentOverrides: {
-        'projects': 'p'
+const options = {
+    promptStr: chalk.yellow(' λ'),
+}
+
+const gitOptions: git.IGitOptions = {
+    contractions: {
+        'refs/heads/': '',
     },
 }
 
+const pathOptions: IPathOptions = {
+    homeStr: '~',
+    separator: chalk.blue(path.sep),
+    contractions: {
+        'projects': 'p',
+    },
+}
 
 export function render () {
-    git.getCurrentRepoStatus()
+    git.getCurrentRepoStatus(gitOptions)
        .done(repoStatus => printPath(repoStatus),
              err        => { console.error(err); printPath(null) })
 }
 
 function printPath (repoStatus: git.IRepoStatus) {
     let segments = [
-        formatPathParts(options).join(' ')
+        formatPathParts(pathOptions).join(' ')
     ]
 
     if (!utils.nullish(repoStatus)) {

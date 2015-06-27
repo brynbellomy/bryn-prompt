@@ -17,7 +17,7 @@
       , "typings/when/when.d.ts"
       , "src/index.ts"
       , "src/utils.ts"
-      , "src/Shell.ts"
+      , "src/path.ts"
       , "src/git.ts"
     ]
 }
