@@ -1,8 +1,21 @@
-#!/usr/bin/env node --harmony --harmony_classes --harmony_modules --harmony_arrow_functions --harmony_templates
+#!/usr/bin/env node
 
 var bryn_prompt = require('../build/index')
+  , _ = require('lodash')
 
-bryn_prompt.render()
+var bareArgs = _.filter(process.argv, function (arg) { return arg.indexOf('-') !== 0 })
+bareArgs = _.drop(bareArgs, 2)
+
+if (bareArgs.length <= 0) {
+    process.stderr.write('Must specify one arg of the form cols,rows.  Probably should do something like this in your .zshrc:\n'
+                       + '    export PROMPT="$(bryn-prompt $COLUMNS,$LINES --colors)"\n\n')
+    process.exit(1)
+}
+
+
+var colsRows = bareArgs[0].split(',').map(function (s) { return parseInt(s.trim(), 10) })
+
+bryn_prompt.render(colsRows[0], colsRows[1])
 
 
 

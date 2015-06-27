@@ -1,7 +1,7 @@
 
 import * as path from 'path'
 import * as chalk from 'chalk'
-import { nullish, intersperse } from './utils'
+import * as π from 'pan.ts'
 
 export {
     formatPathParts,
@@ -19,7 +19,7 @@ function formatPathParts (opts: IPathOptions): string[] {
     return pathParts.ancestors
                 .map(shortenDirNames(opts.contractions))
                 .concat(pathParts.lastComponents[0])
-                .reduce(intersperse(opts.separator), <string[]>[])
+                .reduce(π.intersperse(opts.separator), <string[]>[])
                 .concat(pathParts.lastComponents[1])
 }
 
@@ -38,10 +38,12 @@ export interface IContractionOverrides {
 
 function shortenDirNames (contractionOverrides: IContractionOverrides) {
     return function (dir: string): string {
-        if (!nullish(contractionOverrides[ dir ])) {
+        if (!π.nullish(contractionOverrides[ dir ])) {
             return contractionOverrides[ dir ]
         }
         const matches = dir.match(/^([_\.]*([a-zA-Z0-9\-\.]{1,3}))/)
         return (matches !== null && matches.length > 0) ? matches[0] : dir
     }
 }
+
+

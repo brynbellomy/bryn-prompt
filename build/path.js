@@ -1,12 +1,12 @@
 var path = require('path');
 var chalk = require('chalk');
-var utils_1 = require('./utils');
+var π = require('pan.ts');
 function formatPathParts(opts) {
     var pathParts = getPathParts(opts.homeStr);
     return pathParts.ancestors
         .map(shortenDirNames(opts.contractions))
         .concat(pathParts.lastComponents[0])
-        .reduce(utils_1.intersperse(opts.separator), [])
+        .reduce(π.intersperse(opts.separator), [])
         .concat(pathParts.lastComponents[1]);
 }
 exports.formatPathParts = formatPathParts;
@@ -18,7 +18,7 @@ function getPathParts(homeStr) {
 }
 function shortenDirNames(contractionOverrides) {
     return function (dir) {
-        if (!utils_1.nullish(contractionOverrides[dir])) {
+        if (!π.nullish(contractionOverrides[dir])) {
             return contractionOverrides[dir];
         }
         var matches = dir.match(/^([_\.]*([a-zA-Z0-9\-\.]{1,3}))/);

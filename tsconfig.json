@@ -15,8 +15,10 @@
       , "typings/jasmine/jasmine.d.ts"
       , "typings/node/node.d.ts"
       , "typings/when/when.d.ts"
+
+      , "node_modules/pan.ts/dist/pants.d.ts"
+
       , "src/index.ts"
-      , "src/utils.ts"
       , "src/path.ts"
       , "src/git.ts"
     ]
