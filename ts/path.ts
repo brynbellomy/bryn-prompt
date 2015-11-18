@@ -1,7 +1,7 @@
 
 import * as path from 'path'
 import * as chalk from 'chalk'
-import * as π from 'pan.ts'
+import * as π from 'pants'
 
 export {
     formatPathParts,
@@ -19,7 +19,7 @@ function formatPathParts (opts: IPathOptions): string[] {
     return pathParts.ancestors
                 .map(shortenDirNames(opts.contractions))
                 .concat(pathParts.lastComponents[0])
-                .reduce(π.intersperse(opts.separator), <string[]>[])
+                .reduce(π.intersperse(opts.separator), [] as string[])
                 .concat(pathParts.lastComponents[1])
 }
 
@@ -27,7 +27,7 @@ function getPathParts(homeStr: string) {
     const ancestors = process.cwd().replace(process.env['HOME'], homeStr)
                                    .split(path.sep)
 
-    const lastComponents = <string[]> [].concat( chalk.blue.bold(ancestors.pop()), chalk.blue(ancestors.pop()) ).reverse()
+    const lastComponents = [].concat( chalk.blue.bold(ancestors.pop()), chalk.blue(ancestors.pop()) ).reverse() as string[]
 
     return { ancestors, lastComponents }
 }

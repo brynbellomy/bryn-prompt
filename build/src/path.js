@@ -1,6 +1,6 @@
 var path = require('path');
 var chalk = require('chalk');
-var π = require('pan.ts/ts');
+var π = require('pan.ts');
 function formatPathParts(opts) {
     var pathParts = getPathParts(opts.homeStr);
     return pathParts.ancestors

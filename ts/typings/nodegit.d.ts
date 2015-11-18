@@ -1,16 +1,14 @@
 
 
 declare module 'nodegit' {
-    import * as when from 'when'
-
     module nodegit {
         export class Repository {
-            getStatus(): when.Promise<Status[]>;
-            getCurrentBranch(): when.Promise<Reference>;
-            getRemotes(): when.Promise<Remote[]>;
-            getRemote(remote: string|Remote): when.Promise<Remote>;
+            getStatus(): Promise<Status[]>;
+            getCurrentBranch(): Promise<Reference>;
+            getRemotes(): Promise<Remote[]>;
+            getRemote(remote: string|Remote): Promise<Remote>;
 
-            static open (repoPath): when.Promise<Repository>;
+            static open (repoPath): Promise<Repository>;
         }
 
         export class Remote {

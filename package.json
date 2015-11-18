@@ -2,10 +2,7 @@
   "name": "bryn-prompt",
   "version": "0.1.0",
   "description": "My lovely lordly prompt",
-  "main": "build/index.js",
-  "scripts": {
-    "test": "gulp test"
-  },
+  "main": "js/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/brynbellomy/bryn-prompt"
@@ -18,24 +15,14 @@
   ],
   "license": "ISC",
   "devDependencies": {
-    "del": "^1.2.0",
-    "glob": "^5.0.10",
-    "gulp": "^3.8.11",
-    "gulp-jasmine": "^2.0.1",
-    "gulp-load-plugins": "^0.10.0",
-    "gulp-typescript": "^2.7.7",
-    "jasmine": "^2.3.1",
-    "jasmine-reporters": "^2.0.6",
-    "lodash": "^3.9.3",
-    "ts-link-defs": "^1.0.3",
     "tsd": "^0.6.1",
-    "typescript": "^1.5.0-beta",
-    "vinyl-source-stream": "^1.1.0"
+    "typescript": "^1.8.0-dev.20151118"
   },
   "dependencies": {
     "chalk": "^1.0.0",
+    "es6-promise": "^3.0.2",
     "lodash": "^3.9.3",
-    "pan.ts": "0.0.2",
-    "when": "^3.7.3"
+    "nodegit": "^0.4.1",
+    "pan.ts": "2.0.0"
   }
 }

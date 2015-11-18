@@ -1,12 +1,10 @@
 
-///<reference path='all-typings.d.ts' />
-
 import * as _ from 'lodash'
 import * as path from 'path'
 import * as chalk from 'chalk'
 import { formatPathParts, IPathOptions } from './path'
 import * as git from './git'
-import * as π from 'pan.ts'
+import * as π from 'pants'
 
 
 const options = {
@@ -30,13 +28,17 @@ const pathOptions: IPathOptions = {
     separator: chalk.blue(path.sep),
     contractions: {
         'projects': 'p',
+        '_clients': '_c',
+        'listenonrepeat': 'lor',
     },
 }
 
 export function render (cols: number, rows: number) {
-    git.getCurrentRepoStatus(gitOptions)
-       .done(repoStatus => printPath(repoStatus, cols, rows),
-             err        => printPath(null, cols, rows))
+    printPath(null, cols, rows)
+    // git.getCurrentRepoStatus(gitOptions)
+    //    // .done(repoStatus => printPath(repoStatus, cols, rows),
+    //    .done(repoStatus => printPath(null, cols, rows),
+    //          err        => printPath(null, cols, rows))
 }
 
 function printPath (repoStatus: git.IRepoStatus, cols: number, rows: number) {
@@ -60,6 +62,9 @@ function printPath (repoStatus: git.IRepoStatus, cols: number, rows: number) {
             rightSegments.push(chalk.blue(parts[0], chalk.bold(parts[1])))
         }
     }
+
+    let d = new Date()
+    rightSegments.push(chalk.blue(d.toString()))
 
     // our powers combined
     const renderedSegments = segments.join(' ')

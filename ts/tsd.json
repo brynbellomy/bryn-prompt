@@ -5,20 +5,17 @@
   "path": "typings",
   "bundle": "typings/tsd.d.ts",
   "installed": {
-    "jasmine/jasmine.d.ts": {
-      "commit": "2ca2ee37d47df607cc006824c516050a4cf869f0"
-    },
     "node/node.d.ts": {
       "commit": "2ca2ee37d47df607cc006824c516050a4cf869f0"
-    },
-    "when/when.d.ts": {
-      "commit": "8b7cc13f6dbabd0a49de7ccba75c342160e600ad"
     },
     "chalk/chalk.d.ts": {
       "commit": "2c96e9e77765b72ce43ab8163f42e504f3e2facb"
     },
     "lodash/lodash.d.ts": {
       "commit": "2c96e9e77765b72ce43ab8163f42e504f3e2facb"
+    },
+    "es6-promise/es6-promise.d.ts": {
+      "commit": "fc341765ebbb04b7109981a25dced01f488f4d94"
     }
   }
 }

@@ -1,14 +1,12 @@
 
 import * as assert from 'assert'
-import * as when from 'when'
-import * as whenNode from 'when/node'
 import * as _ from 'lodash'
 import ng = require('nodegit')
 const find: {
     dir: (needle:string, cwd:string, cb: (err:any, found:string) => void) => void
 } = require('fs-find-root')
 
-import * as π from 'pan.ts'
+import * as π from 'pants'
 
 
 export interface IRepoStatus {
@@ -17,9 +15,18 @@ export interface IRepoStatus {
     origin: string;
 }
 
-export function findRepo (cwd: string = process.cwd()) {
+export function findRepo (cwd: string = process.cwd()): Promise<string> {
     assert(!π.nullish(cwd))
-    return whenNode.lift(find.dir)('.git', cwd)
+
+    return new Promise((resolve, reject) => {
+        find.dir('.git', cwd, (err, found) => {
+            if (!π.nullish(err)) {
+                reject(err)
+            } else {
+                resolve(found)
+            }
+        })
+    })
 }
 
 export interface IGitOptions {
@@ -32,22 +39,21 @@ export function getCurrentRepoStatus (opts: IGitOptions, cwd: string = process.c
     })
 }
 
-export function getRepoStatus (opts: IGitOptions, repoPath: string)
-{
+export function getRepoStatus (opts: IGitOptions, repoPath: string) {
     return ng.Repository.open(repoPath)
-                .then(repo => when.join(
-                    repo.getStatus().catch(_ => null),
-                    repo.getCurrentBranch().catch(_ => null),
-                    repo.getRemote('origin').catch(_ => null)
+                .then(repo => (Promise.all as any)(
+                    repo.getStatus(),
+                    repo.getCurrentBranch(),
+                    repo.getRemote('origin')
                 ))
                 .then((tuple: [ng.Status[], ng.Reference, ng.Remote]) => {
                     const [statuses, currentBranch, origin] = tuple
 
-                    return <IRepoStatus> {
+                    return {
                         branch: !!currentBranch ? applyContractions(currentBranch.toString(), opts.contractions) : null,
                         dirty:  !!statuses      ? _.some(statuses, isDirty) : null,
                         origin: !!origin        ? applyContractions(origin.url(), opts.contractions) : null,
-                    }
+                    } as IRepoStatus
                 })
                 .catch(err => {
                     return {branch: null, dirty: null, origin: null}
