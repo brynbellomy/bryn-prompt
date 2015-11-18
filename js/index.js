@@ -2,21 +2,20 @@ var _ = require('lodash');
 var path = require('path');
 var chalk = require('chalk');
 var path_1 = require('./path');
-var π = require('pants');
 var options = {
     promptStr: chalk.yellow(' λ '),
 };
-var gitOptions = {
-    contractions: {
-        'refs/heads/': '',
-        'git@github.com:': 'gh:',
-        'git://github.com/': 'gh:',
-        'git@bitbucket.org:': 'bb:',
-        'git://bitbucket.org/': 'bb:',
-        'brynbellomy/': '',
-        '.git': '',
-    },
-};
+// const gitOptions: git.IGitOptions = {
+//     contractions: {
+//         'refs/heads/': '',
+//         'git@github.com:': 'gh:',
+//         'git://github.com/': 'gh:',
+//         'git@bitbucket.org:': 'bb:',
+//         'git://bitbucket.org/': 'bb:',
+//         'brynbellomy/': '',
+//         '.git': '',
+//     },
+// }
 var pathOptions = {
     homeStr: '~',
     separator: chalk.blue(path.sep),
@@ -27,33 +26,21 @@ var pathOptions = {
     },
 };
 function render(cols, rows) {
-    printPath(null, cols, rows);
-    // git.getCurrentRepoStatus(gitOptions)
-    //    // .done(repoStatus => printPath(repoStatus, cols, rows),
-    //    .done(repoStatus => printPath(null, cols, rows),
-    //          err        => printPath(null, cols, rows))
+    printPath(cols, rows);
 }
 exports.render = render;
-function printPath(repoStatus, cols, rows) {
+function printPath(cols, rows) {
     var segments = [];
     var rightSegments = [];
     // left segments
     segments.push(path_1.formatPathParts(pathOptions).join(' '));
-    if (!π.nullish(repoStatus)) {
-        if (!π.nullish(repoStatus.branch)) {
-            var color = repoStatus.dirty ? chalk.red : chalk.green;
-            segments.push(color(repoStatus.branch));
-        }
-    }
     // right segments
-    if (!π.nullish(repoStatus)) {
-        if (!π.nullish(repoStatus.origin)) {
-            var parts = repoStatus.origin.split(':');
-            rightSegments.push(chalk.blue(parts[0], chalk.bold(parts[1])));
-        }
-    }
-    var d = new Date();
-    rightSegments.push(chalk.blue(d.toString()));
+    var date = new Date(), y = '' + date.getFullYear(), m = '' + (date.getMonth() + 1), d = '' + date.getDate(), hrs = '' + date.getHours(), mins = '' + date.getMinutes(), secs = '' + date.getSeconds(), unix = '' + date.getTime();
+    rightSegments.push(chalk.grey(chalk.white(hrs) + ':' + chalk.white(mins)));
+    rightSegments.push('.');
+    rightSegments.push(chalk.grey(chalk.blue(y) + '.' + chalk.blue(m) + '.' + chalk.blue(d)));
+    rightSegments.push('.');
+    rightSegments.push(chalk.grey(unix.toString()));
     // our powers combined
     var renderedSegments = segments.join(' ');
     var renderedRight = ' ' + rightSegments.join(' ');

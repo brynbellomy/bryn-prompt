@@ -3,7 +3,7 @@ import * as _ from 'lodash'
 import * as path from 'path'
 import * as chalk from 'chalk'
 import { formatPathParts, IPathOptions } from './path'
-import * as git from './git'
+// import * as git from './git'
 import * as π from 'pants'
 
 
@@ -11,17 +11,17 @@ const options = {
     promptStr: chalk.yellow(' λ '),
 }
 
-const gitOptions: git.IGitOptions = {
-    contractions: {
-        'refs/heads/': '',
-        'git@github.com:': 'gh:',
-        'git://github.com/': 'gh:',
-        'git@bitbucket.org:': 'bb:',
-        'git://bitbucket.org/': 'bb:',
-        'brynbellomy/': '',
-        '.git': '',
-    },
-}
+// const gitOptions: git.IGitOptions = {
+//     contractions: {
+//         'refs/heads/': '',
+//         'git@github.com:': 'gh:',
+//         'git://github.com/': 'gh:',
+//         'git@bitbucket.org:': 'bb:',
+//         'git://bitbucket.org/': 'bb:',
+//         'brynbellomy/': '',
+//         '.git': '',
+//     },
+// }
 
 const pathOptions: IPathOptions = {
     homeStr: '~',
@@ -34,37 +34,33 @@ const pathOptions: IPathOptions = {
 }
 
 export function render (cols: number, rows: number) {
-    printPath(null, cols, rows)
-    // git.getCurrentRepoStatus(gitOptions)
-    //    // .done(repoStatus => printPath(repoStatus, cols, rows),
-    //    .done(repoStatus => printPath(null, cols, rows),
-    //          err        => printPath(null, cols, rows))
+    printPath(cols, rows)
 }
 
-function printPath (repoStatus: git.IRepoStatus, cols: number, rows: number) {
+function printPath (cols: number, rows: number) {
     let segments = []
     let rightSegments = []
 
     // left segments
     segments.push(formatPathParts(pathOptions).join(' '))
 
-    if (!π.nullish(repoStatus)) {
-        if (!π.nullish(repoStatus.branch)) {
-            const color = repoStatus.dirty ? chalk.red : chalk.green
-            segments.push(color(repoStatus.branch))
-        }
-    }
-
     // right segments
-    if (!π.nullish(repoStatus)) {
-        if (!π.nullish(repoStatus.origin)) {
-            const parts = repoStatus.origin.split(':')
-            rightSegments.push(chalk.blue(parts[0], chalk.bold(parts[1])))
-        }
-    }
 
-    let d = new Date()
-    rightSegments.push(chalk.blue(d.toString()))
+    const date = new Date()
+        , y = ''+ date.getFullYear()
+        , m = ''+ (date.getMonth() + 1)
+        , d = ''+ date.getDate()
+        , hrs = ''+ date.getHours()
+        , mins = ''+ date.getMinutes()
+        , secs = ''+ date.getSeconds()
+        , unix = ''+ date.getTime()
+
+
+    rightSegments.push(chalk.grey(chalk.white(hrs) + ':' + chalk.white(mins)))
+    rightSegments.push('.')
+    rightSegments.push(chalk.grey(chalk.blue(y) + '.' + chalk.blue(m) + '.' + chalk.blue(d)))
+    rightSegments.push('.')
+    rightSegments.push(chalk.grey(unix.toString()))
 
     // our powers combined
     const renderedSegments = segments.join(' ')

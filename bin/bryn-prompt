@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
-var bryn_prompt = require('../build/index')
+'use strict';
+
+let bryn_prompt = require('../js/index')
   , _ = require('lodash')
 
-var bareArgs = _.filter(process.argv, function (arg) { return arg.indexOf('-') !== 0 })
+let bareArgs = _.filter(process.argv, arg => arg.indexOf('-') !== 0)
 bareArgs = _.drop(bareArgs, 2)
 
 if (bareArgs.length <= 0) {
@@ -13,7 +15,7 @@ if (bareArgs.length <= 0) {
 }
 
 
-var colsRows = bareArgs[0].split(',').map(function (s) { return parseInt(s.trim(), 10) })
+let colsRows = bareArgs[0].split(',').map(s => parseInt(s.trim(), 10))
 
 bryn_prompt.render(colsRows[0], colsRows[1])
 

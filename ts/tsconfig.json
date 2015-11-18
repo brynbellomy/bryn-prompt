@@ -9,14 +9,12 @@
     },
     "files": [
         "typings/tsd.d.ts"
-      , "typings/nodegit.d.ts"
       , "typings/chalk/chalk.d.ts"
       , "typings/lodash/lodash.d.ts"
       , "typings/node/node.d.ts"
 
       , "index.ts"
       , "path.ts"
-      , "git.ts"
     ]
 }
 
