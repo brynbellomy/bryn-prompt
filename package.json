@@ -1,6 +1,6 @@
 {
   "name": "bryn-prompt",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "My lovely lordly prompt",
   "main": "js/index.js",
   "repository": {
