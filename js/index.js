@@ -35,7 +35,11 @@ function printPath(cols, rows) {
     // left segments
     segments.push(path_1.formatPathParts(pathOptions).join(' '));
     // right segments
-    var date = new Date(), y = '' + date.getFullYear(), m = '' + (date.getMonth() + 1), d = '' + date.getDate(), hrs = '' + date.getHours(), mins = '' + date.getMinutes(), secs = '' + date.getSeconds(), unix = '' + date.getTime();
+    var date = new Date(), y = '' + date.getFullYear(), m = '' + (date.getMonth() + 1), d = '' + date.getDate(), unix = '' + date.getTime();
+    var hrs = date.getHours(), mins = date.getMinutes(), secs = date.getSeconds();
+    hrs = ((hrs < 10) ? ' ' : '') + hrs;
+    mins = ((mins < 10) ? '0' : '') + mins;
+    secs = ((secs < 10) ? '0' : '') + secs;
     rightSegments.push(chalk.grey(chalk.white(hrs) + ':' + chalk.white(mins)));
     rightSegments.push('.');
     rightSegments.push(chalk.grey(chalk.blue(y) + '.' + chalk.blue(m) + '.' + chalk.blue(d)));

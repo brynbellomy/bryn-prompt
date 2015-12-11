@@ -50,11 +50,14 @@ function printPath (cols: number, rows: number) {
         , y = ''+ date.getFullYear()
         , m = ''+ (date.getMonth() + 1)
         , d = ''+ date.getDate()
-        , hrs = ''+ date.getHours()
-        , mins = ''+ date.getMinutes()
-        , secs = ''+ date.getSeconds()
         , unix = ''+ date.getTime()
 
+    var hrs: any = date.getHours()
+      , mins: any = date.getMinutes()
+      , secs: any = date.getSeconds()
+    hrs  = ((hrs < 10)  ? ' ' : '') + hrs
+    mins = ((mins < 10) ? '0' : '') + mins
+    secs = ((secs < 10) ? '0' : '') + secs
 
     rightSegments.push(chalk.grey(chalk.white(hrs) + ':' + chalk.white(mins)))
     rightSegments.push('.')
