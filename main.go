@@ -81,5 +81,31 @@ func main() {
 	spacesStr := strings.Repeat(" ", need)
 
 	var promptStr = utils.Yellowf(" λ ")
-	os.Stdout.WriteString("\n" + pathStr + spacesStr + dateStr + Resetf("") + "\n" + promptStr + Resetf("") + "\n")
+
+	unescaped := []byte("\n" + pathStr + spacesStr + dateStr + Resetf("") + "\n" + promptStr + Resetf("") + "\n")
+
+	// We have to escape color characters so that bash knows they're zero-width.  Otherwise scrolling
+	// back through command history results in a corrupted prompt.
+	escaped := []byte("")
+	escapeSeq := false
+	for i := 0; i < len(unescaped); i++ {
+		if !escapeSeq {
+			if unescaped[i] == '\x1b' {
+				escapeSeq = true
+				escaped = append(escaped, '\x01')
+			}
+
+			escaped = append(escaped, unescaped[i])
+
+		} else {
+			escaped = append(escaped, unescaped[i])
+
+			if unescaped[i] == 'm' {
+				escapeSeq = false
+				escaped = append(escaped, '\x02')
+			}
+		}
+	}
+
+	os.Stdout.Write(escaped)
 }
