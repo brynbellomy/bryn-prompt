@@ -1,16 +1,19 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 
+	"github.com/brynbellomy/git2go"
+
 	"github.com/brynbellomy/bryn-prompt/utils"
-	"github.com/fatih/color"
 )
 
-var Resetf = color.New(color.Reset).SprintfFunc()
+const Reset = "\x1b[0m"
 
 func getScreenSize() (cols uint64, rows uint64, err error) {
 	if len(os.Args) < 2 {
@@ -44,30 +47,26 @@ func main() {
 
 	var pathLen, dateLen int
 	{
-		color.NoColor = true
-
-		pathStr, err := utils.GetPathStr()
+		pathStr, err := utils.GetPathStr(false)
 		if err != nil {
 			return
 		}
 
-		dateStr, err := utils.GetDateStr()
+		dateStr, err := utils.GetDateStr(false)
 		if err != nil {
 			return
 		}
 
 		pathLen = len(pathStr)
 		dateLen = len(dateStr)
-
-		color.NoColor = false
 	}
 
-	pathStr, err := utils.GetPathStr()
+	pathStr, err := utils.GetPathStr(true)
 	if err != nil {
 		return
 	}
 
-	dateStr, err := utils.GetDateStr()
+	dateStr, err := utils.GetDateStr(true)
 	if err != nil {
 		return
 	}
@@ -82,7 +81,15 @@ func main() {
 
 	var promptStr = utils.Yellowf(" λ ")
 
-	unescaped := []byte("\n" + pathStr + spacesStr + dateStr + Resetf("") + "\n" + promptStr + Resetf("") + "\n")
+	var gitStr string
+	branchName, err := gitBranch()
+	if err != nil {
+		return
+	} else if branchName != "" {
+		gitStr = utils.Greyf("[") + utils.Redf(branchName) + utils.Greyf("]") + Reset
+	}
+
+	unescaped := []byte("\n" + pathStr + spacesStr + dateStr + Reset + "\n" + gitStr + Reset + promptStr + Reset + "\n")
 
 	// We have to escape color characters so that bash knows they're zero-width.  Otherwise scrolling
 	// back through command history results in a corrupted prompt.
@@ -108,4 +115,54 @@ func main() {
 	}
 
 	os.Stdout.Write(escaped)
+}
+
+func gitBranch() (string, error) {
+	gitPath, isRepo := isGitRepo()
+	if !isRepo {
+		return "", nil
+	}
+
+	repo, err := git.OpenRepository(gitPath)
+	if err != nil {
+		return "", err
+	}
+
+	iter, err := repo.NewBranchIterator(git.BranchAll)
+	if err != nil {
+		return "", err
+	}
+
+	for {
+		branch, _, err := iter.Next()
+		if err != nil {
+			return "", err
+		}
+		is, err := branch.IsCheckedOut()
+		if err != nil {
+			return "", err
+		}
+		if is {
+			return branch.Name()
+		}
+	}
+}
+
+func isGitRepo() (string, bool) {
+	cwd, err := os.Getwd()
+	if err != nil {
+		return "", false
+	}
+
+	parts := strings.Split(cwd, "/")
+	for i := len(parts); i >= 0; i-- {
+		maybeGitPath := filepath.Join(strings.Join(parts[:i], "/"), ".git")
+		_, err = os.Stat(maybeGitPath)
+		if err != nil && !errors.Is(err, os.ErrNotExist) {
+			return "", false
+		} else if err == nil {
+			return maybeGitPath, true
+		}
+	}
+	return "", false
 }

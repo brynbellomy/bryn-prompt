@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func GetPathStr() (string, error) {
+func GetPathStr(color bool) (string, error) {
 	cwd, err := getCwd()
 	if err != nil {
 		return "", err
@@ -25,15 +25,22 @@ func GetPathStr() (string, error) {
 
 		} else if i == secondToLastIdx {
 			// second to last is dark blue
-			parts[i] = Bluef(parts[i])
-
+			if color {
+				parts[i] = Bluef(parts[i])
+			}
 		} else if i == secondToLastIdx+1 {
 			// last is bright blue
-			parts[i] = BlueBoldf(parts[i])
+			if color {
+				parts[i] = BlueBoldf(parts[i])
+			}
 		}
 	}
 
-	return strings.Join(parts, Bluef(" / ")), nil
+	if color {
+		return strings.Join(parts, Bluef(" / ")), nil
+	} else {
+		return strings.Join(parts, " / "), nil
+	}
 }
 
 func getCwd() (string, error) {

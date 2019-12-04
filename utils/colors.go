@@ -1,11 +1,12 @@
 package utils
 
-import "github.com/fatih/color"
+import "github.com/gookit/color"
 
 var (
-	Whitef    = color.New(color.FgWhite).SprintfFunc()
-	Yellowf   = color.New(color.FgYellow).SprintfFunc()
-	Bluef     = color.New(color.FgBlue).SprintfFunc()
-	BlueBoldf = color.New(color.FgBlue, color.Bold).SprintfFunc()
-	Greyf     = color.New(color.Faint).SprintfFunc()
+	Whitef    = color.HEX("bce1ff").Sprintf
+	Yellowf   = color.HEX("e5b567").Sprintf
+	Redf      = color.HEX("854147").Sprintf
+	BlueBoldf = color.HEX("6c99bb").Sprintf
+	Greyf     = color.HEX("6b675b").Sprintf
+	Bluef     = color.HEX("4A879E").Sprintf
 )
