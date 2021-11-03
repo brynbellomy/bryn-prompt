@@ -1,7 +1,7 @@
 package main
 
 import (
-	"errors"
+	goerrors "errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -41,6 +41,7 @@ func main() {
 	var err error
 	defer func() {
 		if err != nil {
+			fmt.Println("error:", err)
 			panic(err)
 		}
 	}()
@@ -77,7 +78,10 @@ func main() {
 	}
 
 	need := int(cols) - (pathLen + dateLen)
-	spacesStr := strings.Repeat(" ", need)
+	var spacesStr string
+	if need > 0 {
+		spacesStr = strings.Repeat(" ", need)
+	}
 
 	var promptStr = utils.Yellowf(" λ ")
 
@@ -135,7 +139,9 @@ func gitBranch() (string, error) {
 
 	for {
 		branch, _, err := iter.Next()
-		if err != nil {
+		if git.IsErrorCode(err, git.ErrIterOver) {
+			return "", nil
+		} else if err != nil {
 			return "", err
 		}
 		is, err := branch.IsCheckedOut()
@@ -158,7 +164,7 @@ func isGitRepo() (string, bool) {
 	for i := len(parts); i >= 0; i-- {
 		maybeGitPath := filepath.Join(strings.Join(parts[:i], "/"), ".git")
 		_, err = os.Stat(maybeGitPath)
-		if err != nil && !errors.Is(err, os.ErrNotExist) {
+		if err != nil && !goerrors.Is(err, os.ErrNotExist) {
 			return "", false
 		} else if err == nil {
 			return maybeGitPath, true
